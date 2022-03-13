@@ -11,3 +11,6 @@ RUN pip install jupyterlab_vim && \
 
 RUN pip install twine && \
     pip install wheel
+
+RUN pip install sphinx && \
+    pip install sphinx_rtd_theme
