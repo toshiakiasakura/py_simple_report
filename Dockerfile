@@ -13,4 +13,5 @@ RUN pip install twine && \
     pip install wheel
 
 RUN pip install sphinx && \
-    pip install sphinx_rtd_theme
+    pip install sphinx_rtd_theme && \
+    pip install sphinx-autodoc-typehints
