@@ -5,3 +5,6 @@
 
 ## Installation
 `pip install py-simple-report`
+
+## Documentation
+- https://toshiakiasakura.github.io/py_simple_report/
