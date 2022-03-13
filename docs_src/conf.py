@@ -39,11 +39,6 @@ extensions = [
     'sphinx.ext.mathjax',
 ]
 
-nbsphinx_execute_arguments = [
-    "--InlineBackend.figure_formats={'svg', 'pdf'}",
-    "--InlineBackend.rc={'figure.dpi': 96}",
-]
-
 source_suffix = [".rst", ".md"]
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
