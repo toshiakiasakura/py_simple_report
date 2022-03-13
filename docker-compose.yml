@@ -19,7 +19,7 @@ services:
 
     # ボリューム(データの永続化の場所)の設定(ホスト:コンテナ)
     volumes:
-      - .:/workdir
+      - ..:/workdir
 
     # 最後にjupyterLabに接続するためのコマンドを実行する。
     command: start.sh jupyter lab

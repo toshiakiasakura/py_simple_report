@@ -14,4 +14,7 @@ RUN pip install twine && \
 
 RUN pip install sphinx && \
     pip install sphinx_rtd_theme && \
-    pip install sphinx-autodoc-typehints
+    pip install sphinx-autodoc-typehints && \
+    pip install nbsphinx
+
+RUN pip install statsmodels

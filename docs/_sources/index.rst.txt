@@ -10,6 +10,7 @@ Welcome to py_simple_report's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   notebooks/usage
 
 
 Indices and tables

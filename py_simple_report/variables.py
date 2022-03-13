@@ -1,13 +1,6 @@
 import dataclasses
 from typing import Union, Optional, List, Dict, Tuple, Any
 
-class VariableTable():
-    var_name = "変数名"
-    item     = "選択項目"
-    explain  = "質問内容"
-    kind_q   = "選択項目種別"
-    multi_q  = "多肢選択"
-
 class QuestionDataContainer():
     def __init__(
         self, 
@@ -40,11 +33,13 @@ class VisVariables():
         ylabel : Optional[str] = None,
         xlabelsize : Optional[float] = None,
         ylabelsize : Optional[float] = None,
+        xticksize : Optional[float] = None,
+        yticksize : Optional[float] = None,
         xlim : Optional[List[float]] = None,
         ylim : Optional[List[float]] = None,
         title : Optional[str] = None,
         titley : Optional[float] = 1.05, # To easily hide title by cropping.
-        main_kwgs = {},
+        main_kwgs = None,
         save_fig_path = None,
         cmap_type : str = "cmocean",
         cmap_name : str = "balance", # "tab10"
@@ -57,5 +52,7 @@ class VisVariables():
     ) -> None:
         vars_ = locals()
         for k,v in vars_.items():
+            if k == "main_kwgs" and isinstance(v, type(None)):
+                v = {}
             setattr(self, k, v)
         self.locals = vars_

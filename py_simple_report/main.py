@@ -9,6 +9,7 @@ import japanize_matplotlib
 
 from . import variables as vs
 from . import utils
+from . import vis_utils
 
 def create_one_question_data_container(
     var_name: str, 
@@ -118,34 +119,34 @@ def one_cate_bar_plot(
     if not vis_var.ylabel:
         vis_var.ylabel = vis_var.label_count if not percentage else vis_var.label_cont 
 
-    vis = utils.SingleVis(vis_var=vis_var)
+    vis = vis_utils.SingleVis(vis_var=vis_var)
     vis.one_cate_bar_plot(tab)
 
-def wrapper_one_cate_bar_plot(
-    df : pd.DataFrame,
-    df_var : pd.DataFrame,
-    vt : vs.VariableTable,
-    q_num : str, 
-    percentage : bool = False, 
-    skip_miss : bool = False,
-    vis_var : Optional[vs.VariableTable] = None,
-) -> None:
-    """Wrapper function of one cate bar plot.
-    """
-    qdc = create_one_question_data_container(df_var, q_num, vt)
-    tab = one_cate_bar_data(df, qdc, percentage=False)
-    tab_per = one_cate_bar_data(df, qdc, percentage=True)
-    tab_skip = one_cate_bar_data(df, qdc, percentage=True, skip_miss=True)
-    if isinstance(vis_var, type(None)):
-        vis_var = vs.VisVariables()
-    if isinstance(vis_var.rotation, type(None)):
-        vis_var.rotation = 90 
-    display(tab.to_frame())
-    display(tab_per.to_frame())
-    display(tab_skip.to_frame())
-    if percentage:
-        tab = tab_skip if skip_miss else tab_per
-    one_cate_bar_plot(tab, qdc, vis_var, percentage=percentage)
+#def wrapper_one_cate_bar_plot(
+#    df : pd.DataFrame,
+#    df_var : pd.DataFrame,
+#    vt : vs.VariableTable,
+#    q_num : str, 
+#    percentage : bool = False, 
+#    skip_miss : bool = False,
+#    vis_var : Optional[vs.VariableTable] = None,
+#) -> None:
+#    """Wrapper function of one cate bar plot.
+#    """
+#    qdc = create_one_question_data_container(df_var, q_num, vt)
+#    tab = one_cate_bar_data(df, qdc, percentage=False)
+#    tab_per = one_cate_bar_data(df, qdc, percentage=True)
+#    tab_skip = one_cate_bar_data(df, qdc, percentage=True, skip_miss=True)
+#    if isinstance(vis_var, type(None)):
+#        vis_var = vs.VisVariables()
+#    if isinstance(vis_var.rotation, type(None)):
+#        vis_var.rotation = 90 
+#    display(tab.to_frame())
+#    display(tab_per.to_frame())
+#    display(tab_skip.to_frame())
+#    if percentage:
+#        tab = tab_skip if skip_miss else tab_per
+#    one_cate_bar_plot(tab, qdc, vis_var, percentage=percentage)
 
 def crosstab_data(
     df : pd.DataFrame,
@@ -173,14 +174,15 @@ def crosstab_data(
         
     # cross tabulation.
     ser = df[qdc.var_name].replace(qdc.dic)
+    ser_strf = df[qdc_strf.var_name].replace(qdc_strf.dic)
     if skip_miss:
         ser = ser[~(ser==qdc.missing)] 
     if percentage:
-        tab = (pd.crosstab(df[qdc_strf.var_name], ser, normalize="index", **crosstab_kwgs)
+        tab = (pd.crosstab(ser_strf, ser, normalize="index", **crosstab_kwgs)
                .mul(100)
                )
     else:
-        tab = pd.crosstab(df[qdc_strf.var_name], ser, **crosstab_kwgs)
+        tab = pd.crosstab(ser_strf, ser, **crosstab_kwgs)
     
     # reorder data.
     q_order = list(qdc.order)
@@ -191,7 +193,29 @@ def crosstab_data(
                                        allow_except=False)
     return tab
 
-def crosstab_cate_stacked_plot(
+def crosstab_cate_barplot(
+    tab : pd.Series,
+    qdc : vs.QuestionDataContainer,
+    vis_var : vs.VisVariables,
+    percentage : bool = False,
+    legend : bool = True,
+    transpose : bool = False,
+) -> None:
+    """Plot crosstabulational data.
+    """
+    if isinstance(vis_var.title, type(None)):
+        vis_var.title = qdc.title[:15]
+    if isinstance(vis_var.ylabel, type(None)):
+        vis_var.ylabel = vis_var.label_count if not percentage else vis_var.label_cont 
+    if percentage:
+        if not vis_var.ylim:
+            vis_var.ylim = [0,100]
+
+    vis_var = vis_utils.obtain_cmap4labels(qdc.order, qdc.missing, vis_var)
+    vis = vis_utils.SingleVis(vis_var=vis_var)
+    vis.crosstab_cate_barplot(tab, legend=legend, percentage=percentage)
+
+def crosstab_cate_stacked_barplot(
     tab : pd.Series,
     qdc : vs.QuestionDataContainer,
     vis_var : vs.VisVariables,
@@ -200,25 +224,110 @@ def crosstab_cate_stacked_plot(
 ) -> None:
     """Plot crosstabulational data.
     """
-    if not vis_var.title:
+    if isinstance(vis_var.title, type(None)):
         vis_var.title = qdc.title[:15]
-    if not vis_var.xlabel:
+    if isinstance(vis_var.xlabel, type(None)):
         vis_var.xlabel = vis_var.label_count if not percentage else vis_var.label_cont 
     if percentage:
         if not vis_var.xlim:
             vis_var.xlim = [0,100]
 
-    vis_var = utils.obtain_cmap4labels(qdc.order, qdc.missing, vis_var)
-    vis = utils.SingleVis(vis_var=vis_var)
+    vis_var = vis_utils.obtain_cmap4labels(qdc.order, qdc.missing, vis_var)
+    vis = vis_utils.SingleVis(vis_var=vis_var)
     tab = tab.loc[tab.index[::-1]]
-    vis.crosstab_cate_stacked_plot(tab, legend=legend)
+    vis.crosstab_cate_stacked_barplot(tab, legend=legend, percentage=percentage)
 
-def wrapper_crosstab_cate_stacked_plot(
+def output_crosstab_cate_barplot(
     df : pd.DataFrame,
     qdc : vs.QuestionDataContainer,
     qdc_strf : vs.QuestionDataContainer,
     skip_miss : bool = False,
-    vis_var : Optional[vs.VariableTable] = None,
+    vis_var : Optional[vs.VisVariables] = None,
+    save_fig_path : Optional[str] = None,
+    save_num_path : Optional[str] = None,
+    percentage : bool = True,
+    show : Union[bool,str] = True,
+    decimal : int = 2,
+    stacked : bool = True,
+    transpose : bool = False,
+) -> None:
+    """Output cross-tabulated data as number/percentage and a figure.
+
+    Args:
+        df :
+        qdc : 
+        qdc_strf :
+        skip_miss :
+        vis_var :
+        save_fig_path :
+        save_num_path :
+        percentage : If True, a figure is created as a percentage style.
+        show : Takes True, False, "number", "figure".
+        decimal : Round to "decimal"th place when exporting a percentage.
+        transpose : transpose dataframe.
+    """
+    tab = crosstab_data(df, qdc, qdc_strf, percentage=False, skip_miss=skip_miss)
+    tab_per  = crosstab_data(df, qdc, qdc_strf, percentage=percentage, skip_miss=skip_miss)
+    if transpose:
+        tab = tab.T
+        tab_per = tab_per.T
+
+    # Number part.
+    if (show == True) or (show == "number"):
+        display(tab)
+        display(tab_per)
+    if not isinstance(save_num_path, type(None)):
+        pre_title = f"{qdc.title}" 
+        utils.save_number_to_data(tab, save_num_path, title=f"{pre_title} raw number")
+        if skip_miss:
+            title = f"{pre_title} percentage(%) excluding missing"
+        else:
+            title = f"{pre_title} percentage(%) including missing"
+        utils.save_number_to_data(
+            tab_per, save_num_path, title=title, decimal=decimal)
+    if isinstance(vis_var, type(None)):
+        vis_var = vs.VisVariables()
+
+    # Visualization part.
+    if isinstance(vis_var, type(None)):
+        vis_var = vs.VisVariables()
+    if (show == True) or (show == "figure"):
+        vis_var.show = True
+    else:
+        vis_var.show = False
+    tab = tab_per if percentage else tab
+    qdc = qdc if not transpose else qdc_strf
+
+    if not isinstance(save_fig_path, type(None)):
+        vis_var.save_fig_path = save_fig_path
+    if stacked:
+        crosstab_cate_stacked_barplot(tab, qdc, vis_var, 
+                                   percentage=percentage, legend=True)
+    else:
+        crosstab_cate_barplot(tab, qdc, vis_var, 
+                                   percentage=percentage, legend=True)
+
+    if not isinstance(save_fig_path, type(None)):
+        name, ext = os.path.splitext(save_fig_path)
+        vis_var.save_fig_path = name + "_no_label" + ext
+    if stacked:
+        crosstab_cate_stacked_barplot(tab, qdc, vis_var, 
+                                   percentage=percentage, legend=False)
+    else:
+        crosstab_cate_barplot(tab, qdc, vis_var, 
+                                   percentage=percentage, legend=False)
+
+    # Create label only
+    if not isinstance(save_fig_path, type(None)):
+        vis_var.save_fig_path = name + "_label_only" + ext
+    vis_utils.label_only_fig(vis_var, tab, qdc.missing)
+
+def wrapper_crosstab_cate_stacked_barplot(
+    df : pd.DataFrame,
+    qdc : vs.QuestionDataContainer,
+    qdc_strf : vs.QuestionDataContainer,
+    skip_miss : bool = False,
+    vis_var : Optional[vs.VisVariables] = None,
     save_fig_path : Optional[str] = None,
     save_num_path : Optional[str] = None,
     show : bool = True,
@@ -250,31 +359,22 @@ def wrapper_crosstab_cate_stacked_plot(
     if not isinstance(save_fig_path, type(None)):
         vis_var.save_fig_path = save_fig_path
     tab = tab_skip if skip_miss else tab_per
-    crosstab_cate_stacked_plot(tab, qdc, vis_var, 
+    crosstab_cate_stacked_barplot(tab, qdc, vis_var, 
                                percentage=percentage, legend=True)
 
     if not isinstance(save_fig_path, type(None)):
         name, ext = os.path.splitext(save_fig_path)
         vis_var.save_fig_path = name + "_no_label" + ext
-    crosstab_cate_stacked_plot(tab, qdc, vis_var, percentage=percentage, legend=False)
+    crosstab_cate_stacked_barplot(tab, qdc, vis_var, percentage=percentage, legend=False)
 
     # Create label only
     if not isinstance(save_fig_path, type(None)):
         vis_var.save_fig_path = name + "_label_only" + ext
-    utils.label_only_fig(vis_var, tab, qdc.missing)
-
-def debug_one_item_checker(df_var : pd.DataFrame, q_num : str, vt: vs.VariableTable) -> None:
-    """Check question data for adjusting the variable table.
-    """
-    s =  "## Checking part ##\n\n"
-    s += f"- Q : {q_num}\n"
-    s += f"- Corresponding table : \n    {utils.item_str2dict(df_var.loc[q_num, vt.item])}\n"
-    s += f"- Variable table : \n{df_var.loc[q_num]}\n"
-    print(s)
+    vis_utils.label_only_fig(vis_var, tab, qdc.missing)
 
 def obtain_multi_binaries_items_with_strat(
     df : pd.DataFrame,
-    q_nums : List[str],
+    q_var_names : List[str],
     qdcs_dic : Dict[str, vs.QuestionDataContainer],
     qdc_strf : vs.QuestionDataContainer, 
     percentage : bool = True,
@@ -284,26 +384,25 @@ def obtain_multi_binaries_items_with_strat(
     """Calculate percentage of yes for multiple binary question items.
     
     Args : 
-        q_nums : multiple binary question items for crosstabulation.
+        q_var_names: multiple binary question items for crosstabulation.
         fetch_value : a value for flag yes.
     """
     dfM = df.copy()
-    # TODO : discriminate "欠損" and np.nan. Writing "欠損=チェックなし" is not sophisticated ideas to handle interpretation of missing. 
-    #         Create a new column representing missing meaning is a better choice. 
-    dfM[q_nums] = dfM[q_nums].replace(np.nan,0)
+    dfM[q_var_names] = dfM[q_var_names].replace(np.nan,0)
+    ser_strf = df[qdc_strf.var_name].replace(qdc_strf.dic)
     df_sum = pd.DataFrame()
-    for l in q_nums:
+    for l in q_var_names:
         # Create label. 
         qdc = qdcs_dic[l]
         label = qdc.dic[fetch_value] # Fetch "1" value.
 
         # Crosstabulate data.
         if percentage:
-            tab = (pd.crosstab(dfM[qdc_strf.var_name], dfM[l], normalize="index")
+            tab = (pd.crosstab(ser_strf, dfM[l], normalize="index")
                    .mul(100)
                    )
         else:
-            tab = pd.crosstab(dfM[qdc_strf.var_name], dfM[l])
+            tab = pd.crosstab(ser_strf, dfM[l])
         per = tab[fetch_value].rename(label) # Fetch "1" value.
         df_sum = pd.concat((df_sum, per), axis=1)
     df_sum = df_sum.loc[qdc_strf.order]
@@ -318,7 +417,7 @@ def barplot_multi_binaries_with_strat(
     """Plot multiple binary items simultaneously.
     """
     order = df_sum.columns
-    if not vis_var.title:
+    if isinstance(vis_var.title, type(None)):
         vis_var.title = ", ".join(order)[:15]
     if isinstance(vis_var.ylabel, type(None)):
         vis_var.ylabel = vis_var.label_count if not percentage else vis_var.label_cont 
@@ -326,55 +425,80 @@ def barplot_multi_binaries_with_strat(
         if not vis_var.ylim:
             vis_var.ylim = [0,100]
 
-    vis_var = utils.obtain_cmap4labels(order, np.nan, vis_var)
-    vis = utils.SingleVis(vis_var=vis_var)
+    vis_var = vis_utils.obtain_cmap4labels(order, np.nan, vis_var)
+    vis = vis_utils.SingleVis(vis_var=vis_var)
     vis.barplot_multi_binaries_with_strat(df_sum, legend=legend)
 
-def wrapper_multi_binaries_with_strat(
+def output_multi_binaries_with_strat(
     df : pd.DataFrame,
-    q_nums : List[str], 
+    q_var_names: List[str], 
     qdcs_dic : Dict[str, vs.QuestionDataContainer],
     qdc_strf : vs.QuestionDataContainer,
-    vis_var : Optional[vs.VariableTable] = None,
+    vis_var : Optional[vs.VisVariables] = None,
     save_fig_path : Optional[str] = None,
     save_num_path : Optional[str] = None,
     show : bool = True,
-    transpose : bool = False
+    percentage : bool = True,
+    transpose : bool = False,
+    decimal : int = 2,
 ) -> None:
-    """Wrap multiple binary items.
+    """Output cross-tabulated data as number/percentage and a figure.
+
+    Args:
+        df :
+        q_var_names :
+        qdcs_dic : 
+        qdc_strf :
+        vis_var :
+        save_fig_path :
+        save_num_path :
+        percentage : If True, a figure is created as a percentage style.
+        show : Takes True, False, "number", "figure".
+        transpose : If True, x and y axis is swapped when plotting.
+        decimal : Round to "decimal"th place when exporting a percentage.
     """
     df_num = obtain_multi_binaries_items_with_strat(
-           df, q_nums, qdcs_dic, qdc_strf, percentage=False)
+           df, q_var_names, qdcs_dic, qdc_strf, percentage=False)
     df_per = obtain_multi_binaries_items_with_strat(
-           df, q_nums, qdcs_dic, qdc_strf, percentage=True)
+           df, q_var_names, qdcs_dic, qdc_strf, percentage=True)
     if transpose:
+        df_num = df_num.T
         df_per = df_per.T
 
-    # number/percentage.
-    if show:
+    # Number part.
+    if (show == True) or (show == "number"):
         display(df_num)
         display(df_per)
     if not isinstance(save_num_path, type(None)):
-        title = "_".join(q_nums)
-        utils.save_number_to_data(df_num, save_num_path, title=f"raw number,{title} ")
+        pre_title = "_".join(q_var_names)
+        utils.save_number_to_data(df_num, save_num_path, title=f"raw number,{pre_title}")
         utils.save_number_to_data(
-            df_per, save_num_path, title=f"percentage(%),{title} ", decimal=2)
+            df_per, save_num_path, title=f"percentage(%) ,{pre_title} ", decimal=decimal)
+    if isinstance(vis_var, type(None)):
+        vis_var = vs.VisVariables()
+
 
     # Visualization.
     if isinstance(vis_var, type(None)):
         vis_var = vs.VisVariables()
-    vis_var.show = show
+    if (show == True) or (show == "figure"):
+        vis_var.show = True
+    else:
+        vis_var.show = False
+
+    df_ = df_per if percentage else df_num
 
     if not isinstance(save_fig_path, type(None)):
         vis_var.save_fig_path = save_fig_path
-    barplot_multi_binaries_with_strat(df_per, vis_var, percentage=True, legend=True)
+    barplot_multi_binaries_with_strat(df_, vis_var, percentage=percentage, legend=True)
 
     if not isinstance(save_fig_path, type(None)):
         name, ext = os.path.splitext(save_fig_path)
         vis_var.save_fig_path = name + "_no_label" + ext
-    barplot_multi_binaries_with_strat(df_per, vis_var, percentage=True, legend=False)
+    barplot_multi_binaries_with_strat(df_, vis_var, percentage=percentage, legend=False)
 
     # Create label only
     if not isinstance(save_fig_path, type(None)):
         vis_var.save_fig_path = name + "_label_only" + ext
-    utils.label_only_fig(vis_var, df_per)
+    vis_utils.label_only_fig(vis_var, df_)
+
