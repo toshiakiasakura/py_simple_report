@@ -1,0 +1,27 @@
+version: "3"
+services:
+  lab:
+    # image: toshiaki0910/covid19:2.0
+    container_name: gen_simple_reports
+
+    # used when create a new image.
+    build:
+        context: .
+        dockerfile: ./Dockerfile
+
+    # ポートの設定("ホスト：コンテナ")
+    ports:
+      - "8888:8888"
+
+    # 環境変数の設定
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+
+    # ボリューム(データの永続化の場所)の設定(ホスト:コンテナ)
+    volumes:
+      - .:/workdir
+
+    # 最後にjupyterLabに接続するためのコマンドを実行する。
+    command: start.sh jupyter lab
+
+

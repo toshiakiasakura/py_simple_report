@@ -13,7 +13,7 @@ import numpy as np
 import pandas as pd
 import cmocean
 
-import variables as vs
+from . import variables as vs
 
 def item_str2dict(s : str, missing : Optional[str] =None) -> dict:
     """Convert strings in items column into dictionary format.

@@ -7,8 +7,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import japanize_matplotlib
 
-import variables as vs
-import utils
+from . import variables as vs
+from . import utils
 
 def create_one_question_data_container(
     var_name: str, 

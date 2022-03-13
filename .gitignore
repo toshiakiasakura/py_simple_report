@@ -4,6 +4,7 @@
 *.swp
 ~*
 
+.pypirc
 test_dir/
 
 .DS_Store
