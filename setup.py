@@ -3,7 +3,6 @@
 # License : MIT license
 
 from setuptools import setup
-import py_simple_report
 
 DESCRIPTION = "py_simple_report: Produce elemnts of figure files and number/pecentage contained csv file for a report."
 NAME = "py_simple_report"
@@ -12,16 +11,16 @@ AUTHOR_EMAIL = "aflu.blossompaws@gmail.com"
 URL = "https://github.com/toshiakiasakura/py_simple_report"
 LICENSE = "MIT"
 DOWNLOAD_URL = "https://github.com/toshiakiasakura/py_simple_report"
-VERSION = py_simple_report.__version__
 PYTHON_REQUIRES = ">=3.7"
 
 INSTALL_REQUIRES = [
     'matplotlib>=3.3.4',
-    'numpy >=1.20.3',
+    'numpy>=1.20.3',
     'pandas>=1.2.4',
     'matplotlib>=3.3.4',
     'cmocean>=2.0',
-]
+    'japanize_matplotlib>=1.1.3'
+] 
 
 EXTRAS_REQUIRE = {}
 
@@ -55,10 +54,10 @@ setup(name=NAME,
       long_description=long_description,
       license=LICENSE,
       url=URL,
-      version=VERSION,
       download_url=DOWNLOAD_URL,
       python_requires=PYTHON_REQUIRES,
       install_requires=INSTALL_REQUIRES,
+      setup_requires=INSTALL_REQUIRES,
       extras_require=EXTRAS_REQUIRE,
       packages=PACKAGES,
       classifiers=CLASSIFIERS
