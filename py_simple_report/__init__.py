@@ -5,3 +5,4 @@ from .main import *
 # )
 from .utils import delete_and_create_csv
 from .variables import QuestionDataContainer, VisVariables
+from .__version__ import __version__

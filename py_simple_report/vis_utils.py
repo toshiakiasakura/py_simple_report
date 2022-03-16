@@ -47,8 +47,7 @@ class SingleVis():
         ) -> None:
         patches = create_patch_for_label(
             label_names = tab.columns, #["test1", "test2", "test3"], 
-            cmap_type = self.vis_var.cmap_type,
-            cmap_name = self.vis_var.cmap_name,
+            color = self.vis_var.colors,
             missing=missing,
             line=False)
         self.fig.patch.set_visible(False)
@@ -165,8 +164,9 @@ def create_patch_for_label(
         >>> plt.legend(handles=patches, frameon=False)
         >>> plt.show()
     """
-    cmap = get_cmap(cmap_type, cmap_name)
-    cmap_cont = judge_cmap_is_continuous_or_not(cmap_type, cmap_name)
+    if isinstance(color, type(None)):
+        cmap = get_cmap(cmap_type, cmap_name)
+        cmap_cont = judge_cmap_is_continuous_or_not(cmap_type, cmap_name)
     patches = []
     #for c, name in zip(["blue","orange","green"],["男","女","不明"]):
     if marker is None:

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Usage of py_simple_report &mdash; py_simple_report 0.2.2 documentation</title>
+  <title>Usage of py_simple_report &mdash; py_simple_report 0.2.7 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -407,7 +407,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&#39;0.2.2&#39;
+&#39;0.2.7&#39;
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -566,11 +566,10 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-self : qdc_Mycor
 var_name : mycor
-missing : missing
 desc : Mycorrhizas
 title : Mycor
+missing : missing
 dic : None
 order : [&#39;never&#39;, &#39;sometimes&#39;, &#39;always&#39;]
 </pre></div></div>
@@ -618,11 +617,10 @@ dict_keys([&#39;mycor&#39;, &#39;vegsout&#39;, &#39;autopoll&#39;, &#39;piq&#39;
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-self : qdc_mycor_Mycorrhizas
 var_name : mycor
-missing : missing
 desc : Mycorrhizas
 title : mycor_Mycorrhizas
+missing : missing
 dic : OrderedDict([(0.0, &#39;never&#39;), (1.0, &#39;sometimes&#39;), (2.0, &#39;always&#39;), (nan, &#39;missing&#39;)])
 order : odict_values([&#39;never&#39;, &#39;sometimes&#39;, &#39;always&#39;, &#39;missing&#39;])
 </pre></div></div>
@@ -654,13 +652,12 @@ order : odict_values([&#39;never&#39;, &#39;sometimes&#39;, &#39;always&#39;, &#
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-self : qdc_autopoll_selfing pollination
 var_name : autopoll
-missing : missing
 desc : selfing pollination
 title : autopoll_selfing pollination
+missing : missing
 dic : OrderedDict([(0.0, &#39;never&#39;), (1.0, &#39;rare&#39;), (2.0, &#39;often&#39;), (3.0, &#39;rule&#39;), (nan, &#39;missing&#39;)])
-order : odict_values([&#39;never&#39;, &#39;rare&#39;, &#39;often&#39;, &#39;rule&#39;, &#39;missing&#39;])
+order : [&#39;never&#39;, &#39;rare&#39;, &#39;often&#39;, &#39;rule&#39;]
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -907,9 +904,11 @@ mkdir: cannot create directory ‘test’: File exists
       <th>never</th>
       <th>present but limited</th>
       <th>important</th>
+      <th>missing</th>
     </tr>
     <tr>
       <th>autopoll</th>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -921,24 +920,28 @@ mkdir: cannot create directory ‘test’: File exists
       <td>47</td>
       <td>13</td>
       <td>8</td>
+      <td>5</td>
     </tr>
     <tr>
       <th>rare</th>
       <td>13</td>
       <td>3</td>
       <td>8</td>
+      <td>2</td>
     </tr>
     <tr>
       <th>often</th>
       <td>11</td>
       <td>3</td>
       <td>2</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>rule</th>
       <td>20</td>
       <td>0</td>
       <td>0</td>
+      <td>1</td>
     </tr>
   </tbody>
 </table>
@@ -1051,7 +1054,7 @@ mkdir: cannot create directory ‘test’: File exists
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|██████████| 5/5 [00:02&lt;00:00,  1.87it/s]
+100%|██████████| 5/5 [00:02&lt;00:00,  2.06it/s]
 </pre></div></div>
 </div>
 </section>
@@ -1739,14 +1742,6 @@ Name: height_cate, dtype: int64
 </div>
 <div class="output_area docutils container">
 <img alt="../_images/notebooks_usage_34_5.png" src="../_images/notebooks_usage_34_5.png" />
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
 </div>
 </div>
 </section>

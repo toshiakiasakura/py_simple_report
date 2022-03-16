@@ -122,32 +122,6 @@ def one_cate_bar_plot(
     vis = vis_utils.SingleVis(vis_var=vis_var)
     vis.one_cate_bar_plot(tab)
 
-#def wrapper_one_cate_bar_plot(
-#    df : pd.DataFrame,
-#    df_var : pd.DataFrame,
-#    vt : vs.VariableTable,
-#    q_num : str, 
-#    percentage : bool = False, 
-#    skip_miss : bool = False,
-#    vis_var : Optional[vs.VariableTable] = None,
-#) -> None:
-#    """Wrapper function of one cate bar plot.
-#    """
-#    qdc = create_one_question_data_container(df_var, q_num, vt)
-#    tab = one_cate_bar_data(df, qdc, percentage=False)
-#    tab_per = one_cate_bar_data(df, qdc, percentage=True)
-#    tab_skip = one_cate_bar_data(df, qdc, percentage=True, skip_miss=True)
-#    if isinstance(vis_var, type(None)):
-#        vis_var = vs.VisVariables()
-#    if isinstance(vis_var.rotation, type(None)):
-#        vis_var.rotation = 90 
-#    display(tab.to_frame())
-#    display(tab_per.to_frame())
-#    display(tab_skip.to_frame())
-#    if percentage:
-#        tab = tab_skip if skip_miss else tab_per
-#    one_cate_bar_plot(tab, qdc, vis_var, percentage=percentage)
-
 def crosstab_data(
     df : pd.DataFrame,
     qdc : vs.QuestionDataContainer,
@@ -266,7 +240,7 @@ def output_crosstab_cate_barplot(
         decimal : Round to "decimal"th place when exporting a percentage.
         transpose : transpose dataframe.
     """
-    tab = crosstab_data(df, qdc, qdc_strf, percentage=False, skip_miss=skip_miss)
+    tab = crosstab_data(df, qdc, qdc_strf, percentage=False, skip_miss=False)
     tab_per  = crosstab_data(df, qdc, qdc_strf, percentage=percentage, skip_miss=skip_miss)
     if transpose:
         tab = tab.T
@@ -297,9 +271,9 @@ def output_crosstab_cate_barplot(
         vis_var.show = False
     tab = tab_per if percentage else tab
     qdc = qdc if not transpose else qdc_strf
+    path_output = utils.PathOutput(save_fig_path)
 
-    if not isinstance(save_fig_path, type(None)):
-        vis_var.save_fig_path = save_fig_path
+    vis_var.save_fig_path = path_output.raw
     if stacked:
         crosstab_cate_stacked_barplot(tab, qdc, vis_var, 
                                    percentage=percentage, legend=True)
@@ -307,9 +281,7 @@ def output_crosstab_cate_barplot(
         crosstab_cate_barplot(tab, qdc, vis_var, 
                                    percentage=percentage, legend=True)
 
-    if not isinstance(save_fig_path, type(None)):
-        name, ext = os.path.splitext(save_fig_path)
-        vis_var.save_fig_path = name + "_no_label" + ext
+    vis_var.save_fig_path = path_output.no_label
     if stacked:
         crosstab_cate_stacked_barplot(tab, qdc, vis_var, 
                                    percentage=percentage, legend=False)
@@ -318,58 +290,7 @@ def output_crosstab_cate_barplot(
                                    percentage=percentage, legend=False)
 
     # Create label only
-    if not isinstance(save_fig_path, type(None)):
-        vis_var.save_fig_path = name + "_label_only" + ext
-    vis_utils.label_only_fig(vis_var, tab, qdc.missing)
-
-def wrapper_crosstab_cate_stacked_barplot(
-    df : pd.DataFrame,
-    qdc : vs.QuestionDataContainer,
-    qdc_strf : vs.QuestionDataContainer,
-    skip_miss : bool = False,
-    vis_var : Optional[vs.VisVariables] = None,
-    save_fig_path : Optional[str] = None,
-    save_num_path : Optional[str] = None,
-    show : bool = True,
-) -> None:
-    """Wrapper function of crosstab categorical plot. 
-    """
-    percentage = True
-    tab = crosstab_data(df, qdc, qdc_strf, percentage=False, skip_miss=False)
-    tab_per  = crosstab_data(df, qdc, qdc_strf, percentage=percentage, skip_miss=False)
-    tab_skip = crosstab_data(df, qdc, qdc_strf, percentage=percentage, skip_miss=True)
-
-    # Numerical part.
-    if show:
-        display(tab)
-        display(tab_per)
-        display(tab_skip)
-    if not isinstance(save_num_path, type(None)):
-        title = f"{qdc.var_name}, {qdc.title}" 
-        utils.save_number_to_data(tab, save_num_path, title=f"{title} raw number")
-        utils.save_number_to_data(
-            tab_per, save_num_path, title=f"{title} percentage(%) including missing", decimal=2)
-        utils.save_number_to_data(
-            tab_skip, save_num_path, title=f"{title} percentage(%) excluding missing", decimal=2)
-
-    # Visualization part.
-    if isinstance(vis_var, type(None)):
-        vis_var = vs.VisVariables()
-    vis_var.show = show
-    if not isinstance(save_fig_path, type(None)):
-        vis_var.save_fig_path = save_fig_path
-    tab = tab_skip if skip_miss else tab_per
-    crosstab_cate_stacked_barplot(tab, qdc, vis_var, 
-                               percentage=percentage, legend=True)
-
-    if not isinstance(save_fig_path, type(None)):
-        name, ext = os.path.splitext(save_fig_path)
-        vis_var.save_fig_path = name + "_no_label" + ext
-    crosstab_cate_stacked_barplot(tab, qdc, vis_var, percentage=percentage, legend=False)
-
-    # Create label only
-    if not isinstance(save_fig_path, type(None)):
-        vis_var.save_fig_path = name + "_label_only" + ext
+    vis_var.save_fig_path = path_output.label_only
     vis_utils.label_only_fig(vis_var, tab, qdc.missing)
 
 def obtain_multi_binaries_items_with_strat(
@@ -487,18 +408,15 @@ def output_multi_binaries_with_strat(
         vis_var.show = False
 
     df_ = df_per if percentage else df_num
+    path_output = utils.PathOutput(save_fig_path)
 
-    if not isinstance(save_fig_path, type(None)):
-        vis_var.save_fig_path = save_fig_path
+    vis_var.save_fig_path = path_output.raw
     barplot_multi_binaries_with_strat(df_, vis_var, percentage=percentage, legend=True)
 
-    if not isinstance(save_fig_path, type(None)):
-        name, ext = os.path.splitext(save_fig_path)
-        vis_var.save_fig_path = name + "_no_label" + ext
+    vis_var.save_fig_path = path_output.no_label
     barplot_multi_binaries_with_strat(df_, vis_var, percentage=percentage, legend=False)
 
     # Create label only
-    if not isinstance(save_fig_path, type(None)):
-        vis_var.save_fig_path = name + "_label_only" + ext
+    vis_var.save_fig_path = path_output.label_only
     vis_utils.label_only_fig(vis_var, df_)
 

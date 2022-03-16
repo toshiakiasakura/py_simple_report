@@ -109,3 +109,20 @@ def delete_and_create_csv(save_num_path : str) -> None:
         os.remove(save_num_path)
     with open(save_num_path,"w") as f:
         f.write("")
+
+class PathOutput:
+    def __init__(self, path : Optional[str]) -> None:
+        """Generate a list of output path from one path.
+        """
+        self.raw = path
+        if not isinstance(path, type(None)):
+            name, ext = os.path.splitext(path)
+            self.label_only = name + "_label_only" + ext
+            self.no_label = name + "_no_label" + ext
+        else:
+            self.label_only = None
+            self.no_label = None
+
+
+
+

@@ -5,23 +5,22 @@ class QuestionDataContainer():
     def __init__(
         self, 
         var_name : Optional[str] = None, # variable name shared with original data.
-        missing : Optional[str] = None,
         desc : Optional[str] = None,
         title : Optional[str] = None, # var_name and desc.
+        missing : Optional[str] = None,
         dic : Optional[dict] = None, # correspondence dict of numrical and string categories.
         order : Optional[list] = None,
      ) -> None:
         vars_ = locals()
         for k,v in vars_.items():
             setattr(self, k, v)
-        self.locals = vars_
 
     def __repr__(self):
         return(f"qdc_{self.title}")
 
     def show(self):
-        for k,v in self.locals.items():
-            print(f"{k} : {v}")
+        for k in ["var_name","desc", "title", "missing", "dic", "order"]:
+            print(f"{k} : {getattr(self,k)}")
 
 class VisVariables():
     def __init__(
