@@ -6,6 +6,8 @@
 ## Installation
 `pip install py-simple-report`
 
+It is noted that from jupyter notebook/lab, `!pip install py-simple-report` causes error of ` ModuleNotFoundError: No module named 'matplotlib_inline'` so that please pip from a terminal.
+
 ## Documentation
 - https://toshiakiasakura.github.io/py_simple_report/
 

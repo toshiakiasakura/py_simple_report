@@ -14,12 +14,11 @@ DOWNLOAD_URL = "https://github.com/toshiakiasakura/py_simple_report"
 PYTHON_REQUIRES = ">=3.7"
 
 INSTALL_REQUIRES = [
-    'matplotlib>=3.3.4',
+    'matplotlib',
     'numpy>=1.20.3',
     'pandas>=1.2.4',
-    'matplotlib>=3.3.4',
     'cmocean>=2.0',
-    'japanize_matplotlib>=1.1.3'
+    'japanize_matplotlib'
 ] 
 
 EXTRAS_REQUIRE = {}
