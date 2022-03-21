@@ -220,6 +220,7 @@ def output_crosstab_cate_barplot(
     save_fig_path : Optional[str] = None,
     save_num_path : Optional[str] = None,
     percentage : bool = True,
+    include_all : bool = True,
     show : Union[bool,str] = True,
     decimal : int = 2,
     stacked : bool = True,
@@ -236,12 +237,19 @@ def output_crosstab_cate_barplot(
         save_fig_path :
         save_num_path :
         percentage : If True, a figure is created as a percentage style.
+        include_all : If True, margins in pd.crosstab set True for number and percentage.
         show : Takes True, False, "number", "figure".
         decimal : Round to "decimal"th place when exporting a percentage.
         transpose : transpose dataframe.
     """
-    tab = crosstab_data(df, qdc, qdc_strf, percentage=False, skip_miss=False)
-    tab_per  = crosstab_data(df, qdc, qdc_strf, percentage=percentage, skip_miss=skip_miss)
+    if include_all:
+        crosstab_kwgs = dict(margins=True)
+    else:
+        crosstab_kwgs = dict(margins=False)
+    tab = crosstab_data(df, qdc, qdc_strf, percentage=False, skip_miss=False, 
+                        crosstab_kwgs=crosstab_kwgs)
+    tab_per  = crosstab_data(df, qdc, qdc_strf, percentage=percentage, skip_miss=skip_miss,
+                         crosstab_kwgs=crosstab_kwgs)
     if transpose:
         tab = tab.T
         tab_per = tab_per.T
@@ -272,6 +280,8 @@ def output_crosstab_cate_barplot(
     tab = tab_per if percentage else tab
     qdc = qdc if not transpose else qdc_strf
     path_output = utils.PathOutput(save_fig_path)
+    # Since "All" should not be included here, delete "All" index and columns.
+    tab = utils.delete_All_from_index_column(tab)
 
     vis_var.save_fig_path = path_output.raw
     if stacked:

@@ -25,7 +25,10 @@ def item_str2dict(s : str, missing : Optional[str] =None) -> dict:
             .split(",")
     dic = OrderedDict()
     for l in lis:
-        k,v = l.split("=")
+        try:
+            k,v = l.split("=")
+        except:
+            raise Exception(f"Split by '=' should be 2 compositions :\nItems: {lis}")
         k = k.strip(" ").strip("　")
         if isinstance(k, str) and k.isnumeric():
             k = float(k)
@@ -62,6 +65,14 @@ def imputate_reorder_table(
     for i in rows_:
         if i not in table_.index:
             table_.loc[i]=0
+
+    # Accept "All"
+    for c in table_.columns:
+        if c == "All":
+            cols_.append(c)
+    for i in table_.index:
+        if i == "All":
+            rows_.append(i)
 
     if allow_except:
         for c in table_.columns:
@@ -123,6 +134,15 @@ class PathOutput:
             self.label_only = None
             self.no_label = None
 
+def delete_All_from_index_column(tab : pd.DataFrame) -> pd.DataFrame:
+    """Delete "All" row and column from dataframe. 
+    """
+    All = "All"
+    if All in tab.index: 
+        tab = tab.drop(index=All)
+    if All in tab.columns:
+        tab = tab.drop(columns=All)
+    return(tab)
 
 
 
