@@ -1,6 +1,7 @@
 from typing import Union, Optional, List, Dict, Tuple, Any
 from collections import OrderedDict
 import os
+import copy
 
 import pandas as pd
 import numpy as np
@@ -267,8 +268,11 @@ def output_crosstab_cate_barplot(
             title = f"{pre_title} percentage(%) including missing"
         utils.save_number_to_data(
             tab_per, save_num_path, title=title, decimal=decimal)
+
     if isinstance(vis_var, type(None)):
         vis_var = vs.VisVariables()
+    else:
+        vis_var = copy.deepcopy(vis_var)
 
     # Visualization part.
     if isinstance(vis_var, type(None)):
@@ -412,6 +416,8 @@ def output_multi_binaries_with_strat(
     # Visualization.
     if isinstance(vis_var, type(None)):
         vis_var = vs.VisVariables()
+    else:
+        vis_var = copy.deepcopy(vis_var)
     if (show == True) or (show == "figure"):
         vis_var.show = True
     else:
