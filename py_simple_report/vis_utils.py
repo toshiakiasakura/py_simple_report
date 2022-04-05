@@ -72,7 +72,7 @@ class SingleVis():
         legend = True,
         percentage : bool = True,
     ) -> None:
-        tab.plot(kind="bar", ax=self.ax, stacked=False, color=self.vis_var.colors, 
+        ax = tab.plot(kind="bar", ax=self.ax, stacked=False, color=self.vis_var.colors, 
                  **self.vis_var.main_kwgs)
         if percentage:
             format_percentage(self.ax, axis="y")
@@ -89,8 +89,15 @@ class SingleVis():
         legend=True, 
         percentage:bool=True,
     ) -> None:
-        tab.plot(kind="barh", ax=self.ax, stacked=True, color=self.vis_var.colors,
+        ax = tab.plot(kind="barh", ax=self.ax, stacked=True, color=self.vis_var.colors,
                  **self.vis_var.main_kwgs)
+        if self.vis_var.annotate:
+            n_rows, n_cols = tab.shape
+            annotate_horizontal_stacked_barplot(ax, n_rows, n_cols, 
+                                                fontsize=self.vis_var.annotate_fontsize,
+                                                fmt=self.vis_var.annotate_fmt,
+                                                cutoff_annotate=self.vis_var.annotate_cutoff,
+                                                )
         if percentage:
             format_percentage(self.ax, axis="x")
         draw_grid(self.ax, axis="x")
@@ -132,6 +139,67 @@ def draw_grid(
     ax.grid(axis=axis, color=color, linewidth=linewidth, linestyle=linestyle)
     ax.set_axisbelow(True)
 
+def annotate_horizontal_stacked_barplot(
+    ax, 
+    n_rows : int,
+    n_cols : int,
+    x_offset : float = 1,
+    y_offset : float = 0,
+    fmt : str = ".1f",
+    cutoff_annotate : float = 10,
+    fontsize : Optional[float] = None,
+) -> None:
+    """Annotate number/percentage of each category for horizontal stacked barplot. 
+
+    Args:
+        ax : axis returned by pd.plot.
+        n_rows : number of rows (length of index if dataframe).
+        n_cols : number of columns (length of columns if dataframe).
+        fmt : string format for annotation.
+        cutoff_annotate : If a value is smaller than this value, number/pecentage are hidden.
+    """
+    pos = (get_bbox_positions_as_df(ax)
+           .sort_values(by=["y0", "x0", "x1"])
+           .reset_index(drop=True)
+          )
+    for i in range(n_rows):
+        st = i*n_cols
+        fin = (i+1)*n_cols
+        dfM = pos.loc[pos.index[st:fin]]
+        #display(each)
+        v = dfM["x1"]
+        v_1 = v.shift(1).replace(np.nan,0)
+        dfM["cate"] = v.sub(v_1)
+        for i,b in dfM.iterrows():
+            val = f"{b.cate:{fmt}}"
+            if b.cate > cutoff_annotate:
+                x_pos = b.x0 + x_offset
+                y_pos = b.y0*3/4 + b.y1*1/4 + y_offset
+                ax.annotate(val,  (x_pos , y_pos), color=b.color, fontsize=fontsize)
+
+def get_bbox_positions_as_df(ax, cutoff_bright : float = 0.75) -> pd.DataFrame:
+    """Get bbox positions of barplot to show number/percentage as annotations.
+    Also, colors(white/black) is contained based on the brightness of filled colors.
+
+    Args:
+        ax : axis returned by pd.plot.
+
+    Returns:
+        DataFrame of positions and brightness, and text color. 
+    """
+    dic = dict(x0=[], x1=[], y0=[], y1=[], bright=[], color=[])
+    for p in ax.patches:
+        # Positions.
+        b = p.get_bbox()
+        for pos in ["x0","x1","y0","y1"]:
+            dic[pos].append(getattr(b,pos))
+        # Brightness. 
+        bright = max(p.get_facecolor()[:3])
+        c = "white" if bright <= cutoff_bright else "black"
+        dic["bright"].append(bright)
+        dic["color"].append(c)
+    df = pd.DataFrame(dic)
+    return(df)
 
 def create_patch_for_label(
     label_names: List[str], 

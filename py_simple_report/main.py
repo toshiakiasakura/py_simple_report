@@ -230,13 +230,13 @@ def output_crosstab_cate_barplot(
     """Output cross-tabulated data as number/percentage and a figure.
 
     Args:
-        df :
-        qdc : 
-        qdc_strf :
-        skip_miss :
-        vis_var :
-        save_fig_path :
-        save_num_path :
+        df : DataFrame used for calculation.
+        qdc : Can include missing.
+        qdc_strf : For stratification. Can not include missing for this qdc.
+        skip_miss : If True, missing of rows is ignored and percentage is calculated without missing.
+        vis_var : For control of visualization. See vs.VisVariables for more detail.
+        save_fig_path : Path for saving fig.
+        save_num_path : Path for saving numbers/percentages.
         percentage : If True, a figure is created as a percentage style.
         include_all : If True, margins in pd.crosstab set True for number and percentage.
         show : Takes True, False, "number", "figure".

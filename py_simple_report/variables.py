@@ -42,13 +42,36 @@ class VisVariables():
         save_fig_path = None,
         cmap_type : str = "cmocean",
         cmap_name : str = "balance", # "tab10"
-        # cmap name should be taken from cmocean website
-        # https://matplotlib.org/cmocean/
         colors : Optional[list] = None,
         show : bool = True,
+        annotate : bool = True,
+        annotate_fontsize : Optional[str] = None,
+        annotate_fmt : str = ".1f",
+        annotate_cutoff : float = 10,
         label_count : str = "Count",
         label_cont : str = "Percentage (%)",
     ) -> None:
+        """This class controls visualization schemes. See each attribute explanation 
+        for each role.
+
+        Args:
+            figsize : Figure size.
+            dpi : dpi.
+            rotation : Rotate x label for this degree.
+            xlabel : xlabel.
+            ylabel : ylabel.
+            xlabelsize : Control xlabel size.
+            ylabelsize : Control ylabel size.
+            xticksize : Control xtick size.
+            yticksize : Control ytick size.
+            cmap_type : Takes "cmocean" or "matplotlib" only. 
+            cmap_name : colormap name. cmap name should be taken from cmocean website.
+                See https://matplotlib.org/cmocean/
+            annotate : If True, annotate each categorical values. 
+            annotate_fontsize : fontsize of annotation.
+            annotate_fmt : format defined by f-string for annotation.
+            annotate_cutoff : If a value is smaller than this value, number/pecentage are hidden. 
+        """
         vars_ = locals()
         for k,v in vars_.items():
             if k == "main_kwgs" and isinstance(v, type(None)):
