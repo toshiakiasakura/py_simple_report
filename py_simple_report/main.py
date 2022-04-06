@@ -28,7 +28,10 @@ def create_one_question_data_container(
         desc : a question description.
         missing : np.nan is replaced with this value.
     """
-    dic = utils.item_str2dict(str_items, missing)
+    if "=" in str_items:
+        dic = utils.item_str2dict(str_items, missing)
+    else:
+        dic = {}
     qdc = vs.QuestionDataContainer(
         var_name = var_name, 
         dic   = dic, 
