@@ -88,6 +88,7 @@ def heatmap_crosstab_from_df(
     xlabel : Optional[str] = None,
     ylabel : Optional[str] = None,
     save_fig_path : Optional[str] = None,
+    skip_all : bool = False, 
     vis_var : Optional[vs.VisVariables] = None,
 ) -> None:
     """Create crosstab heatmap from dataframe. 
@@ -101,6 +102,8 @@ def heatmap_crosstab_from_df(
         xlabel : xlabel.
         ylabel : ylabel.
         save_fig_path : to save file path.
+        skip_all : If True, and normalize takes "index", "columns" or All, 
+            margins=True is passed to 
         vis_var : Although title, xlabel, and ylabel are contained in vis_var,
             vis_var is given priority to the above parameters.
 
@@ -123,12 +126,13 @@ def heatmap_crosstab_from_df(
     ser_row = dfM[qdc_row.var_name]
     ser_col = dfM[qdc_col.var_name]
     if normalize is not None:
-        tab= (pd.crosstab(ser_row, ser_col, normalize=normalize, margins=True)
+        margins = False if skip_all else True
+        tab= (pd.crosstab(ser_row, ser_col, normalize=normalize, margins=margins)
                    .mul(100)
                    .round(2)
                   )
     else:
-        tab     = pd.crosstab(ser_row, ser_col, normalize=False, margins=True)
+        tab     = pd.crosstab(ser_row, ser_col, normalize=False, margins=False)
     tab = utils.imputate_reorder_table(tab, rows_=order_row, cols_=order_col)
 
     if vis_var is None:
