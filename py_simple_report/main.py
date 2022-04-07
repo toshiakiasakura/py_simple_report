@@ -78,6 +78,75 @@ def question_data_containers_from_dataframe(
 
     return dic
 
+def heatmap_crosstab_from_df(
+    df : pd.DataFrame, 
+    qdc_row : vs.QuestionDataContainer, 
+    qdc_col : vs.QuestionDataContainer,
+    normalize : Optional[str]= None,
+    fontsize : float = 8,
+    title  : Optional[str] = None,
+    xlabel : Optional[str] = None,
+    ylabel : Optional[str] = None,
+    save_fig_path : Optional[str] = None,
+    vis_var : Optional[vs.VisVariables] = None,
+) -> None:
+    """Create crosstab heatmap from dataframe. 
+
+    Args:
+        df : dataframe.
+        qdc_row : a qdc for a row direction.
+        qdc_col : a qdc for a column direction.
+        normalize : passed to pd.crosstab.
+        title : title. 
+        xlabel : xlabel.
+        ylabel : ylabel.
+        save_fig_path : to save file path.
+        vis_var : Although title, xlabel, and ylabel are contained in vis_var,
+            vis_var is given priority to the above parameters.
+
+    Note:
+        If vis_var is None, the following code is run.
+        
+        >>> vis_var = vs.VisVariables( rotation=90,  figsize=(4,3),  cmap_name="haline", annotate=True)
+        >>> if normalize is not None:
+        >>>     vis_var.title = f"{qdc_row.var_name},{qdc_col.var_name},per"
+        >>>     vis_var.annotate_fmt = ".1f"
+        >>> else:
+        >>>     vis_var.title = f"{qdc_row.var_name},{qdc_col.var_name},cnt"
+        >>>     vis_var.annotate_fmt = ".0f"
+    """
+    dfM = df.copy()
+    dfM[qdc_row.var_name] = dfM[qdc_row.var_name].replace(qdc_row.dic)
+    dfM[qdc_col.var_name] = dfM[qdc_col.var_name].replace(qdc_col.dic)
+    order_row = list(qdc_row.order)
+    order_col = list(qdc_col.order)
+    ser_row = dfM[qdc_row.var_name]
+    ser_col = dfM[qdc_col.var_name]
+    if normalize is not None:
+        tab= (pd.crosstab(ser_row, ser_col, normalize=normalize, margins=True)
+                   .mul(100)
+                   .round(2)
+                  )
+    else:
+        tab     = pd.crosstab(ser_row, ser_col, normalize=False, margins=True)
+    tab = utils.imputate_reorder_table(tab, rows_=order_row, cols_=order_col)
+
+    if vis_var is None:
+        vis_var = vs.VisVariables( rotation=90,  figsize=(4,3),  cmap_name="haline", annotate=True)
+        if normalize is not None:
+            vis_var.title = f"{qdc_row.var_name},{qdc_col.var_name},per"
+            vis_var.annotate_fmt = ".1f"
+        else:
+            vis_var.title = f"{qdc_row.var_name},{qdc_col.var_name},cnt"
+            vis_var.annotate_fmt = ".0f"
+
+    vis_var.xlabel = xlabel if vis_var.xlabel is None else vis_var.xlabel 
+    vis_var.ylabel = xlabel if vis_var.ylabel is None else vis_var.ylabel 
+    vis_var.title  = xlabel if vis_var.title  is None else vis_var.title
+    vis_var.save_fig_path = save_fig_path if vis_var.save_fig_path is None else vis_var.save_fig_path
+
+    vis_utils.heatmap_crosstab(tab, fontsize=fontsize, vis_var=vis_var)
+
 def one_cate_bar_data(
     df : pd.DataFrame,
     qdc : vs.QuestionDataContainer,

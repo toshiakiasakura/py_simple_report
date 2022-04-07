@@ -7,12 +7,54 @@ import matplotlib.dates as mdates
 import matplotlib.ticker as mtick
 from matplotlib.lines import Line2D
 import japanize_matplotlib
+import seaborn as sns
 
 import numpy as np
 import pandas as pd
 import cmocean
+import contextplt as cplt
 
 from . import variables as vs
+
+def heatmap_crosstab(
+    tab : pd.DataFrame, 
+    fontsize : float = 8,
+    vis_var : Optional[vs.VisVariables] = None,
+) -> None:
+    """Create well-styled heatmap.
+
+    Args:
+        tab : Crosstabulated data for visualization.
+        fontsize : fontsize for title, labels, ticks and colorbar.
+        vis_var : 
+    """
+    if vis_var is None:
+        vis_var = vs.VisVariables()
+    cmap = get_cmap(vis_var.cmap_type, vis_var.cmap_name)
+
+    with cplt.Single(
+        title=vis_var.title, 
+        xlabel=vis_var.xlabel,
+        ylabel=vis_var.ylabel,
+        rotation=vis_var.rotation, 
+        figsize=vis_var.figsize,
+        dpi=vis_var.dpi,
+        save_path=vis_var.save_fig_path, 
+        tight=True, 
+        savefig_kargs = dict(facecolor="white"), 
+        titlefontsize=fontsize, 
+        xlabelfontsize=fontsize, 
+        ylabelfontsize=fontsize, 
+        xtickfontsize=fontsize, 
+        ytickfontsize=fontsize,
+    ) as p: 
+        ax = sns.heatmap(tab, cmap=cmap, 
+                         ax=p.ax, 
+                         annot=vis_var.annotate,
+                         fmt=vis_var.annotate_fmt,
+                         annot_kws={"fontsize":fontsize}) 
+        cbar = ax.collections[0].colorbar 
+        cbar.ax.tick_params(labelsize=fontsize) 
 
 class SingleVis():
     def __init__(self, vis_var : vs.VisVariables) -> None:
