@@ -27,7 +27,8 @@ class VisVariables():
         self,
         figsize : Tuple[int,int]= (5,3),
         dpi : int = 150,
-        rotation : Optional[int] = None,
+        xrotation : Optional[int] = None,
+        yrotation : Optional[int] = None,
         xlabel : Optional[str] = None,
         ylabel : Optional[str] = None,
         xlabelsize : Optional[float] = None,
@@ -57,7 +58,8 @@ class VisVariables():
         Args:
             figsize : Figure size.
             dpi : dpi.
-            rotation : Rotate x label for this degree.
+            xrotation : Rotate x label for this degree.
+            yrotation : Rotate y label for this degree.
             xlabel : xlabel.
             ylabel : ylabel.
             xlabelsize : Control xlabel size.

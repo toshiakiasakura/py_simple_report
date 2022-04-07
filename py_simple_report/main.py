@@ -107,7 +107,7 @@ def heatmap_crosstab_from_df(
     Note:
         If vis_var is None, the following code is run.
         
-        >>> vis_var = vs.VisVariables( rotation=90,  figsize=(4,3),  cmap_name="haline", annotate=True)
+        >>> vis_var = vs.VisVariables( xrotation=90,  figsize=(4,3),  cmap_name="haline", annotate=True)
         >>> if normalize is not None:
         >>>     vis_var.title = f"{qdc_row.var_name},{qdc_col.var_name},per"
         >>>     vis_var.annotate_fmt = ".1f"
@@ -132,7 +132,7 @@ def heatmap_crosstab_from_df(
     tab = utils.imputate_reorder_table(tab, rows_=order_row, cols_=order_col)
 
     if vis_var is None:
-        vis_var = vs.VisVariables( rotation=90,  figsize=(4,3),  cmap_name="haline", annotate=True)
+        vis_var = vs.VisVariables( xrotation=90,  figsize=(4,3),  cmap_name="haline", annotate=True)
         if normalize is not None:
             vis_var.title = f"{qdc_row.var_name},{qdc_col.var_name},per"
             vis_var.annotate_fmt = ".1f"

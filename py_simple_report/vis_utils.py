@@ -36,7 +36,8 @@ def heatmap_crosstab(
         title=vis_var.title, 
         xlabel=vis_var.xlabel,
         ylabel=vis_var.ylabel,
-        rotation=vis_var.rotation, 
+        xrotation=vis_var.xrotation, 
+        yrotation=vis_var.yrotation,
         figsize=vis_var.figsize,
         dpi=vis_var.dpi,
         save_path=vis_var.save_fig_path, 
@@ -71,7 +72,8 @@ class SingleVis():
         self.ax.set_ylabel(vis_var.ylabel, fontsize=vis_var.ylabelsize)
         self.ax.set_xlim(vis_var.xlim) if vis_var.xlim else None
         self.ax.set_ylim(vis_var.ylim) if vis_var.ylim else None
-        plt.xticks(rotation=vis_var.rotation)
+        plt.xticks(rotation=vis_var.xrotation)
+        plt.yticks(rotation=vis_var.yrotation)
 
         self.ax.tick_params(axis='x', which='major', labelsize=vis_var.xticksize)
         self.ax.tick_params(axis='y', which='major', labelsize=vis_var.yticksize)

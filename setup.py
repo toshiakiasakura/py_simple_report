@@ -15,10 +15,12 @@ PYTHON_REQUIRES = ">=3.7"
 
 INSTALL_REQUIRES = [
     'matplotlib',
+    'seaborn',
     'numpy>=1.20.3',
     'pandas>=1.2.4',
     'cmocean>=2.0',
-    'japanize_matplotlib'
+    'japanize_matplotlib',
+    'contextplt>=0.2.2',
 ] 
 
 EXTRAS_REQUIRE = {}
