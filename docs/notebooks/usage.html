@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Usage of py_simple_report &mdash; py_simple_report 0.3.1 documentation</title>
+  <title>Usage of py_simple_report &mdash; py_simple_report 0.3.7 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -51,6 +51,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#With-parameters-available.">With parameters available.</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Barplot">Barplot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Heatmap">Heatmap</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#VisVariables">VisVariables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Engineered-columns">Engineered columns</a></li>
 </ul>
@@ -370,6 +371,7 @@ div.rendered_html tbody tr:hover {
 <li><p>Crosstabulation for multiple binaries with stratification</p>
 <ul>
 <li><p>Barplot</p></li>
+<li><p>Heatmap</p></li>
 </ul>
 </li>
 </ul>
@@ -407,7 +409,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&#39;0.2.7&#39;
+&#39;0.3.7&#39;
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -697,9 +699,11 @@ order : [&#39;never&#39;, &#39;rare&#39;, &#39;often&#39;, &#39;rule&#39;]
       <th>present but limited</th>
       <th>important</th>
       <th>missing</th>
+      <th>All</th>
     </tr>
     <tr>
       <th>autopoll</th>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -713,6 +717,7 @@ order : [&#39;never&#39;, &#39;rare&#39;, &#39;often&#39;, &#39;rule&#39;]
       <td>13</td>
       <td>8</td>
       <td>5</td>
+      <td>73</td>
     </tr>
     <tr>
       <th>rare</th>
@@ -720,6 +725,7 @@ order : [&#39;never&#39;, &#39;rare&#39;, &#39;often&#39;, &#39;rule&#39;]
       <td>3</td>
       <td>8</td>
       <td>2</td>
+      <td>26</td>
     </tr>
     <tr>
       <th>often</th>
@@ -727,6 +733,7 @@ order : [&#39;never&#39;, &#39;rare&#39;, &#39;often&#39;, &#39;rule&#39;]
       <td>3</td>
       <td>2</td>
       <td>0</td>
+      <td>16</td>
     </tr>
     <tr>
       <th>rule</th>
@@ -734,6 +741,15 @@ order : [&#39;never&#39;, &#39;rare&#39;, &#39;often&#39;, &#39;rule&#39;]
       <td>0</td>
       <td>0</td>
       <td>1</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>All</th>
+      <td>91</td>
+      <td>19</td>
+      <td>18</td>
+      <td>8</td>
+      <td>136</td>
     </tr>
   </tbody>
 </table>
@@ -802,6 +818,13 @@ order : [&#39;never&#39;, &#39;rare&#39;, &#39;often&#39;, &#39;rule&#39;]
       <td>0.000000</td>
       <td>0.000000</td>
       <td>4.761905</td>
+    </tr>
+    <tr>
+      <th>All</th>
+      <td>66.911765</td>
+      <td>13.970588</td>
+      <td>13.235294</td>
+      <td>5.882353</td>
     </tr>
   </tbody>
 </table>
@@ -905,9 +928,11 @@ mkdir: cannot create directory ‘test’: File exists
       <th>present but limited</th>
       <th>important</th>
       <th>missing</th>
+      <th>All</th>
     </tr>
     <tr>
       <th>autopoll</th>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -921,6 +946,7 @@ mkdir: cannot create directory ‘test’: File exists
       <td>13</td>
       <td>8</td>
       <td>5</td>
+      <td>73</td>
     </tr>
     <tr>
       <th>rare</th>
@@ -928,6 +954,7 @@ mkdir: cannot create directory ‘test’: File exists
       <td>3</td>
       <td>8</td>
       <td>2</td>
+      <td>26</td>
     </tr>
     <tr>
       <th>often</th>
@@ -935,6 +962,7 @@ mkdir: cannot create directory ‘test’: File exists
       <td>3</td>
       <td>2</td>
       <td>0</td>
+      <td>16</td>
     </tr>
     <tr>
       <th>rule</th>
@@ -942,6 +970,15 @@ mkdir: cannot create directory ‘test’: File exists
       <td>0</td>
       <td>0</td>
       <td>1</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>All</th>
+      <td>91</td>
+      <td>19</td>
+      <td>18</td>
+      <td>8</td>
+      <td>136</td>
     </tr>
   </tbody>
 </table>
@@ -1005,6 +1042,12 @@ mkdir: cannot create directory ‘test’: File exists
       <td>0.000000</td>
       <td>0.000000</td>
     </tr>
+    <tr>
+      <th>All</th>
+      <td>71.093750</td>
+      <td>14.843750</td>
+      <td>14.062500</td>
+    </tr>
   </tbody>
 </table>
 </div></div>
@@ -1054,7 +1097,7 @@ mkdir: cannot create directory ‘test’: File exists
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|██████████| 5/5 [00:02&lt;00:00,  2.06it/s]
+100%|██████████| 5/5 [00:03&lt;00:00,  1.53it/s]
 </pre></div></div>
 </div>
 </section>
@@ -1097,9 +1140,11 @@ mkdir: cannot create directory ‘test’: File exists
       <th>present but limited</th>
       <th>important</th>
       <th>missing</th>
+      <th>All</th>
     </tr>
     <tr>
       <th>autopoll</th>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -1113,6 +1158,7 @@ mkdir: cannot create directory ‘test’: File exists
       <td>13</td>
       <td>8</td>
       <td>5</td>
+      <td>73</td>
     </tr>
     <tr>
       <th>rare</th>
@@ -1120,6 +1166,7 @@ mkdir: cannot create directory ‘test’: File exists
       <td>3</td>
       <td>8</td>
       <td>2</td>
+      <td>26</td>
     </tr>
     <tr>
       <th>often</th>
@@ -1127,6 +1174,7 @@ mkdir: cannot create directory ‘test’: File exists
       <td>3</td>
       <td>2</td>
       <td>0</td>
+      <td>16</td>
     </tr>
     <tr>
       <th>rule</th>
@@ -1134,6 +1182,15 @@ mkdir: cannot create directory ‘test’: File exists
       <td>0</td>
       <td>0</td>
       <td>1</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>All</th>
+      <td>91</td>
+      <td>19</td>
+      <td>18</td>
+      <td>8</td>
+      <td>136</td>
     </tr>
   </tbody>
 </table>
@@ -1165,9 +1222,11 @@ mkdir: cannot create directory ‘test’: File exists
       <th>present but limited</th>
       <th>important</th>
       <th>missing</th>
+      <th>All</th>
     </tr>
     <tr>
       <th>autopoll</th>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -1181,6 +1240,7 @@ mkdir: cannot create directory ‘test’: File exists
       <td>13</td>
       <td>8</td>
       <td>5</td>
+      <td>73</td>
     </tr>
     <tr>
       <th>rare</th>
@@ -1188,6 +1248,7 @@ mkdir: cannot create directory ‘test’: File exists
       <td>3</td>
       <td>8</td>
       <td>2</td>
+      <td>26</td>
     </tr>
     <tr>
       <th>often</th>
@@ -1195,6 +1256,7 @@ mkdir: cannot create directory ‘test’: File exists
       <td>3</td>
       <td>2</td>
       <td>0</td>
+      <td>16</td>
     </tr>
     <tr>
       <th>rule</th>
@@ -1202,6 +1264,15 @@ mkdir: cannot create directory ‘test’: File exists
       <td>0</td>
       <td>0</td>
       <td>1</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>All</th>
+      <td>91</td>
+      <td>19</td>
+      <td>18</td>
+      <td>8</td>
+      <td>136</td>
     </tr>
   </tbody>
 </table>
@@ -1373,11 +1444,40 @@ mkdir: cannot create directory ‘test’: File exists
 </div>
 </div>
 </section>
+<section id="Heatmap">
+<h2>Heatmap<a class="headerlink" href="#Heatmap" title="Permalink to this headline">¶</a></h2>
+<p>Heatmap of crosstabulation.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sim_repo</span><span class="o">.</span><span class="n">heatmap_crosstab_from_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">qdc_strf</span><span class="p">,</span> <span class="n">qdc1</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="n">qdc_strf</span><span class="o">.</span><span class="n">var_name</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="n">qdc1</span><span class="o">.</span><span class="n">var_name</span> <span class="p">,</span>
+                                  <span class="n">save_fig_path</span><span class="o">=</span><span class="n">dir2save</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;/</span><span class="si">{</span><span class="n">qdc_strf</span><span class="o">.</span><span class="n">var_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">qdc1</span><span class="o">.</span><span class="n">var_name</span><span class="si">}</span><span class="s2">_cnt.png&quot;</span> <span class="p">)</span>
+<span class="n">sim_repo</span><span class="o">.</span><span class="n">heatmap_crosstab_from_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">qdc_strf</span><span class="p">,</span> <span class="n">qdc1</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="n">qdc_strf</span><span class="o">.</span><span class="n">var_name</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="n">qdc1</span><span class="o">.</span><span class="n">var_name</span><span class="p">,</span>
+                                  <span class="n">normalize</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_usage_32_0.png" src="../_images/notebooks_usage_32_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_usage_32_1.png" src="../_images/notebooks_usage_32_1.png" />
+</div>
+</div>
+</section>
 <section id="VisVariables">
 <h2>VisVariables<a class="headerlink" href="#VisVariables" title="Permalink to this headline">¶</a></h2>
 <p>Important classes in py_simple_report is a VisVariables. It controls a figure setting via it values.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vis_var</span> <span class="o">=</span> <span class="n">sim_repo</span><span class="o">.</span><span class="n">VisVariables</span><span class="p">(</span>
@@ -1426,9 +1526,11 @@ mkdir: cannot create directory ‘test’: File exists
       <th>present but limited</th>
       <th>important</th>
       <th>missing</th>
+      <th>All</th>
     </tr>
     <tr>
       <th>autopoll</th>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -1442,6 +1544,7 @@ mkdir: cannot create directory ‘test’: File exists
       <td>13</td>
       <td>8</td>
       <td>5</td>
+      <td>73</td>
     </tr>
     <tr>
       <th>rare</th>
@@ -1449,6 +1552,7 @@ mkdir: cannot create directory ‘test’: File exists
       <td>3</td>
       <td>8</td>
       <td>2</td>
+      <td>26</td>
     </tr>
     <tr>
       <th>often</th>
@@ -1456,6 +1560,7 @@ mkdir: cannot create directory ‘test’: File exists
       <td>3</td>
       <td>2</td>
       <td>0</td>
+      <td>16</td>
     </tr>
     <tr>
       <th>rule</th>
@@ -1463,6 +1568,15 @@ mkdir: cannot create directory ‘test’: File exists
       <td>0</td>
       <td>0</td>
       <td>1</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>All</th>
+      <td>91</td>
+      <td>19</td>
+      <td>18</td>
+      <td>8</td>
+      <td>136</td>
     </tr>
   </tbody>
 </table>
@@ -1532,6 +1646,13 @@ mkdir: cannot create directory ‘test’: File exists
       <td>0.000000</td>
       <td>4.761905</td>
     </tr>
+    <tr>
+      <th>All</th>
+      <td>66.911765</td>
+      <td>13.970588</td>
+      <td>13.235294</td>
+      <td>5.882353</td>
+    </tr>
   </tbody>
 </table>
 </div></div>
@@ -1540,21 +1661,21 @@ mkdir: cannot create directory ‘test’: File exists
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_usage_32_2.png" src="../_images/notebooks_usage_32_2.png" />
+<img alt="../_images/notebooks_usage_34_2.png" src="../_images/notebooks_usage_34_2.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_usage_32_3.png" src="../_images/notebooks_usage_32_3.png" />
+<img alt="../_images/notebooks_usage_34_3.png" src="../_images/notebooks_usage_34_3.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_usage_32_4.png" src="../_images/notebooks_usage_32_4.png" />
+<img alt="../_images/notebooks_usage_34_4.png" src="../_images/notebooks_usage_34_4.png" />
 </div>
 </div>
 </section>
@@ -1562,7 +1683,7 @@ mkdir: cannot create directory ‘test’: File exists
 <h2>Engineered columns<a class="headerlink" href="#Engineered-columns" title="Permalink to this headline">¶</a></h2>
 <p>Of course, engineered columns can be used.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">height_cate</span> <span class="o">=</span> <span class="s2">&quot;height_cate&quot;</span>
@@ -1624,9 +1745,11 @@ Name: height_cate, dtype: int64
       <th>&lt;3</th>
       <th>3~5</th>
       <th>&gt;5</th>
+      <th>All</th>
     </tr>
     <tr>
       <th>autopoll</th>
+      <th></th>
       <th></th>
       <th></th>
       <th></th>
@@ -1638,24 +1761,35 @@ Name: height_cate, dtype: int64
       <td>18</td>
       <td>34</td>
       <td>21</td>
+      <td>73</td>
     </tr>
     <tr>
       <th>rare</th>
       <td>7</td>
       <td>12</td>
       <td>7</td>
+      <td>26</td>
     </tr>
     <tr>
       <th>often</th>
       <td>5</td>
       <td>9</td>
       <td>2</td>
+      <td>16</td>
     </tr>
     <tr>
       <th>rule</th>
       <td>7</td>
       <td>14</td>
       <td>0</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>All</th>
+      <td>37</td>
+      <td>69</td>
+      <td>30</td>
+      <td>136</td>
     </tr>
   </tbody>
 </table>
@@ -1719,6 +1853,12 @@ Name: height_cate, dtype: int64
       <td>66.666667</td>
       <td>0.000000</td>
     </tr>
+    <tr>
+      <th>All</th>
+      <td>27.205882</td>
+      <td>50.735294</td>
+      <td>22.058824</td>
+    </tr>
   </tbody>
 </table>
 </div></div>
@@ -1727,21 +1867,21 @@ Name: height_cate, dtype: int64
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_usage_34_3.png" src="../_images/notebooks_usage_34_3.png" />
+<img alt="../_images/notebooks_usage_36_3.png" src="../_images/notebooks_usage_36_3.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_usage_34_4.png" src="../_images/notebooks_usage_34_4.png" />
+<img alt="../_images/notebooks_usage_36_4.png" src="../_images/notebooks_usage_36_4.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_usage_34_5.png" src="../_images/notebooks_usage_34_5.png" />
+<img alt="../_images/notebooks_usage_36_5.png" src="../_images/notebooks_usage_36_5.png" />
 </div>
 </div>
 </section>
