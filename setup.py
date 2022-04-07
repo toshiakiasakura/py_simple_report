@@ -20,7 +20,7 @@ INSTALL_REQUIRES = [
     'pandas>=1.2.4',
     'cmocean>=2.0',
     'japanize_matplotlib',
-    'contextplt>=0.2.2',
+    'contextplt>=0.2.3',
 ] 
 
 EXTRAS_REQUIRE = {}
