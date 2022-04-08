@@ -89,6 +89,7 @@ def heatmap_crosstab_from_df(
     ylabel : Optional[str] = None,
     save_fig_path : Optional[str] = None,
     skip_all : bool = False, 
+    show : bool = True,
     vis_var : Optional[vs.VisVariables] = None,
 ) -> None:
     """Create crosstab heatmap from dataframe. 
@@ -104,6 +105,7 @@ def heatmap_crosstab_from_df(
         save_fig_path : to save file path.
         skip_all : If True, and normalize takes "index", "columns" or All, 
             margins=True is passed to 
+        show : If False, figure is not plotted.
         vis_var : Although title, xlabel, and ylabel are contained in vis_var,
             vis_var is given priority to the above parameters.
 
@@ -138,17 +140,17 @@ def heatmap_crosstab_from_df(
     if vis_var is None:
         vis_var = vs.VisVariables( xrotation=90,  figsize=(4,3),  cmap_name="haline", annotate=True)
         if normalize is not None:
-            vis_var.title = f"{qdc_row.var_name},{qdc_col.var_name},per"
+            vis_var.title = f"{qdc_row.var_name},{qdc_col.var_name},per" if title is None else title
             vis_var.annotate_fmt = ".1f"
         else:
-            vis_var.title = f"{qdc_row.var_name},{qdc_col.var_name},cnt"
+            vis_var.title = f"{qdc_row.var_name},{qdc_col.var_name},cnt" if title is None else title
             vis_var.annotate_fmt = ".0f"
 
     vis_var.xlabel = xlabel if vis_var.xlabel is None else vis_var.xlabel 
-    vis_var.ylabel = xlabel if vis_var.ylabel is None else vis_var.ylabel 
-    vis_var.title  = xlabel if vis_var.title  is None else vis_var.title
+    vis_var.ylabel = ylabel if vis_var.ylabel is None else vis_var.ylabel 
     vis_var.save_fig_path = save_fig_path if vis_var.save_fig_path is None else vis_var.save_fig_path
 
+    vis_var.show = vis_var.show if vis_var.show == False else show
     vis_utils.heatmap_crosstab(tab, fontsize=fontsize, vis_var=vis_var)
 
 def one_cate_bar_data(

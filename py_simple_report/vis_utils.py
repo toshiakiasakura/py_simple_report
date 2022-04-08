@@ -48,6 +48,7 @@ def heatmap_crosstab(
         ylabelfontsize=fontsize, 
         xtickfontsize=fontsize, 
         ytickfontsize=fontsize,
+        show=vis_var.show,
     ) as p: 
         ax = sns.heatmap(tab, cmap=cmap, 
                          ax=p.ax, 
